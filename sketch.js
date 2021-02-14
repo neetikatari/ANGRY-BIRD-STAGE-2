@@ -1,11 +1,13 @@
 const Engine = Matter.Engine;
 const World= Matter.World;
 const Bodies = Matter.Bodies;
+const Constraint = Matter.Constraint;
+
 
 var engine, world;
 var box1, pig1;
 var backgroundImg;
-
+var log10, slingshot
 function preload() {
     backgroundImg = loadImage("sprites/bg.png");
 }
@@ -17,9 +19,7 @@ function setup(){
 
     
     ground = new Ground(600,height,1200,20)
-        platfrom = new Ground(200,200,300,300)
-
-
+    platfrom = new Ground(200,200,300,300)
 
     box1 = new Box(700,320,70,70);
     box2 = new Box(920,320,70,70);
@@ -37,6 +37,14 @@ function setup(){
     log5 = new Log(870,120,150, -PI/7);
 
     bird = new Bird(100,100);
+    log10 = new Log(200,50,90,-PI/9);
+
+    //connection between bird and log
+    options={
+        bodyA:bird.body, 
+        bodyB:log10.body}
+    slingshot = Constraint.create(options)
+    World.add(world,slingshot);
 
 }
 
@@ -51,7 +59,7 @@ function draw(){
     ground.display();
     pig1.display();
     log1.display();
-platfrom.display()
+    platfrom.display()
     box3.display();
     box4.display();
     pig3.display();
@@ -62,4 +70,7 @@ platfrom.display()
     log5.display();
 
     bird.display();
+    log10.display();
+
+    line( bird.body.position.x, bird.body.position.y, log10.body.position.x,log10.body.position.y)
 }
